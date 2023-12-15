@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashSet, HashMap};
 
 use itertools::Itertools;
 
@@ -109,19 +109,21 @@ fn board_to_string(board: &Vec<Vec<char>>) -> String {
 fn part2(input: &str) -> u32 {
     let mut board = parse_input(input);
     let limit = 1000000000;
-    let mut exists = HashSet::new();
+    let mut exists = HashMap::new();
     let mut board_str = board_to_string(&board);
     for _idx in 0..limit {
         let start = std::time::Instant::now();
         process_one(&mut board);
 
-        print_board(&board);
-        println!();
+        // print_board(&board);
+        // println!();
 
         board_str = board_to_string(&board);
-        if !exists.insert(board_str.clone()) {
+        if exists.contains_key(&board_str) {
             break;
         }
+
+        exists.insert(board_str.clone(), _idx);
         
 
         let end = std::time::Instant::now();
@@ -129,17 +131,7 @@ fn part2(input: &str) -> u32 {
         
     }
 
-    let mut cycle = 0;
-    loop {
-        process_one(&mut board);
-
-        cycle += 1;
-
-        if board_to_string(&board) == board_str {
-            break;
-        }
-    } 
-
+    let cycle = exists.len() as u32 - exists.get(&board_str).unwrap();
     let times = (limit - exists.len() as u32) % cycle;
     println!("times: {}, cycle: {}, exists: {}", times, cycle, exists.len());
     for _idx in 0..times-1 {
