@@ -8,4 +8,6 @@ edition = "2021"
 [dependencies]
 indoc = "2.0.4"
 itertools = "0.12.0"
+nd_vec = "0.4.0"
+num-traits = "0.2.17"
 pretty_assertions = "1.4.0"
