@@ -1,5 +1,6 @@
-mod day16;
+mod day18;
+mod aoc_lib;
 
 fn main() {
-    day16::solve();
+    day18::solve();
 }
